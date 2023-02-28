@@ -76,14 +76,49 @@ export const TaskIconsContainer = styled.View`
 
 
 export const ModalContainer = styled.Modal`
-    align-items: 'center';
-    background-color: 'white';
-    
-    border-color: 'white';
-    border-width: 1px;
-   
+    border: 1px solid white;
+
+    margin-left: 50%;
+    margin-top: 50%;
 `;
 
-export const ModalView = styled.View`
-    background-color: 'white';
+
+export const Content = styled.View`
+    justify-content: center;
+    align-items: center;
+    
+    background-color: black;
+    height: 40%;
+    width: 70%;
+     
+    z-index: 99;
+
+    border: 1px;
+`;
+
+
+
+export const ButtonModalText = styled.Text`
+    border: 1px solid white;
+    border-radius: 15px;
+    
+    padding: 10px;
+
+    width: 100px;
+
+    text-align: center;
+
+    color: white;
+`;
+
+
+export const ModalUserInput = styled.TextInput`
+    color: white;
+`;
+
+export const CloseModal = styled.TouchableOpacity`
+    justify-content: flex-end;
+    align-items: flex-end;
+    align-self: flex-end;
+
 `;

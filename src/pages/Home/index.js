@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { FlatList, ScrollView, Modal, View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
-
-import { ActionModal } from '../../components/ActionModal'
+import { ScrollView, Modal, Text, TouchableOpacity, View, Button, TextInput } from 'react-native';
+import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
 
 import {
     Container,
@@ -12,22 +10,27 @@ import {
     WorkContainer,
     Task,
     TaskContainer,
-    ModalContainer,
     TaskIconsContainer,
-    ModalView
+    ModalContainer,
+    Content,
+    ModalUserInput,
+    ButtonModalText,
+    CloseModal
 } from './styles';
 
 
 
 export function Home() {
 
-    let [textEditModal, setTextEditModal] = useState();
-
     const [modalVisible, setModalVisible] = useState(false);
+
+    let [textEditModal, setTextEditModal] = useState('');
 
     let [userInput, setUserInput] = useState('');
 
     let [taskList, setTaskList] = useState([{ id: '423432', description: 'Teste' }, { id: '123', description: 'Ir Dormir' }, { id: '5342', description: 'Comer' }, { id: '5219', description: 'Jogar Jogos' }]); //Lista com todas as Tasks
+
+    let [taskIDModal, setTaskIDModal] = useState('');
 
     function addTask() {
 
@@ -63,9 +66,24 @@ export function Home() {
     }
 
     function findId(task) {
-
-        setTextEditModal(task);
+        setTaskIDModal(task.id);
+        setTextEditModal(task.description);
         
+        setModalVisible(true);
+    }
+
+    function handleEditTaskName() {
+
+        setModalVisible(!modalVisible);
+        
+        {taskList.filter((task) => {
+            if (taskIDModal == task.id) {
+                task.description = textEditModal;
+            }
+        })
+
+        }
+
     }
 
     return (
@@ -98,7 +116,7 @@ export function Home() {
                             <Task>{task.description}</Task>
 
                             <TaskIconsContainer>
-                                <TouchableOpacity onPress={() => {findId(task), setModalVisible(true)}}>
+                                <TouchableOpacity onPress={() => { findId(task) }}>
                                     <MaterialCommunityIcons name="pencil-outline" size={24} color="orange" />
                                 </TouchableOpacity>
 
@@ -119,16 +137,30 @@ export function Home() {
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => setModalVisible(!modalVisible)}
-                >
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalVisible(!modalVisible);
+                }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Content>
+                        <CloseModal onPress={() => setModalVisible(!modalVisible)}>
+                            <AntDesign name="closecircle" size={24} color="white" />
+                        </CloseModal>
 
-                <ActionModal
-                    textEditModal={textEditModal}
-                    modal={modalVisible}
-                />
+                        <Text style={{ color: 'white' }}>Insira o novo nome</Text>
 
+                        <ModalUserInput
+                            value={textEditModal}
+                            onChangeText={setTextEditModal}
+                        />
+
+                        <TouchableOpacity onPress={() => handleEditTaskName()}>
+                            <ButtonModalText>Confirmar</ButtonModalText>
+                        </TouchableOpacity>
+
+                    </Content>
+                </View>
             </ModalContainer>
-
         </Container>
 
     );
